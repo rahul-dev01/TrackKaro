@@ -1,0 +1,13 @@
+<resources>
+    <color name="primary_bg">#121212</color>
+    <color name="card_bg">#1E1E1E</color>
+    <color name="text_primary">#F9FAFB</color>
+    <color name="text_secondary">#9CA3AF</color>
+    <color name="text_light">#6B7280</color>
+    <color name="divider">#2D2D2D</color>
+    <color name="icon_bg_green">#14532D</color>
+    <color name="icon_bg_red">#7F1D1D</color>
+    <color name="icon_bg_blue">#1E3A5F</color>
+    <color name="icon_bg_orange">#78350F</color>
+    <color name="icon_bg_purple">#3B0764</color>
+</resources>

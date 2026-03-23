@@ -1,0 +1,41 @@
+<resources>
+    <!-- Backgrounds -->
+    <color name="primary_bg">#F5F5F5</color>
+    <color name="card_bg">#FFFFFF</color>
+
+    <!-- Brand greens -->
+    <color name="accent_green">#22C55E</color>
+    <color name="accent_green_dark">#14532D</color>
+    <color name="accent_green_mid">#16A34A</color>
+    <color name="accent_green_light">#DCFCE7</color>
+
+    <!-- Semantic -->
+    <color name="expense_red">#EF4444</color>
+    <color name="expense_red_light">#FEE2E2</color>
+    <color name="blue_accent">#3B82F6</color>
+    <color name="blue_light">#DBEAFE</color>
+    <color name="orange_accent">#F59E0B</color>
+    <color name="orange_light">#FEF3C7</color>
+    <color name="purple_accent">#8B5CF6</color>
+    <color name="purple_light">#EDE9FE</color>
+
+    <!-- Text -->
+    <color name="text_primary">#111827</color>
+    <color name="text_secondary">#6B7280</color>
+    <color name="text_white">#FFFFFF</color>
+    <color name="text_light">#9CA3AF</color>
+
+    <!-- Icon circle backgrounds -->
+    <color name="icon_bg_green">#DCFCE7</color>
+    <color name="icon_bg_red">#FEE2E2</color>
+    <color name="icon_bg_blue">#DBEAFE</color>
+    <color name="icon_bg_orange">#FEF3C7</color>
+
+    <!-- Misc -->
+    <color name="divider">#E5E7EB</color>
+    <color name="status_completed">#22C55E</color>
+    <color name="status_pending">#F59E0B</color>
+
+    <!-- Icon circle purple -->
+    <color name="icon_bg_purple">#EDE9FE</color>
+</resources>
