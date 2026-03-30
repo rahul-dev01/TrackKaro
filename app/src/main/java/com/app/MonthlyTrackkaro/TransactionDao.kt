@@ -1,4 +1,4 @@
-package com.example.MonthlyTrackkaro
+package com.app.MonthlyTrackkaro
 
 import androidx.lifecycle.LiveData
 import androidx.room.*

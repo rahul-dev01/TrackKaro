@@ -1,4 +1,4 @@
-package com.example.MonthlyTrackkaro
+package com.app.MonthlyTrackkaro
 
 import android.app.AlertDialog
 import android.os.Bundle

@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.MonthlyTrackkaro"
+    namespace = "com.app.MonthlyTrackkaro"
     compileSdk = 35
 
     defaultConfig {
