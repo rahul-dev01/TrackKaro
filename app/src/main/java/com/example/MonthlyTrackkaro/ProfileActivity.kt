@@ -1,7 +1,6 @@
-package com.example.trackkaro
+package com.example.MonthlyTrackkaro
 
 import android.app.AlertDialog
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.EditText

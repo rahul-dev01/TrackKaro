@@ -1,4 +1,4 @@
-package com.example.trackkaro
+package com.example.MonthlyTrackkaro
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

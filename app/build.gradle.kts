@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.trackkaro"
+    namespace = "com.example.MonthlyTrackkaro"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.trackkaro"
+        applicationId = "com.monthlytrackkaro.app"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

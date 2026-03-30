@@ -1,4 +1,4 @@
-package com.example.trackkaro
+package com.example.MonthlyTrackkaro
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,11 +6,11 @@ import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 
-class SplashScreeen : AppCompatActivity() {
+class SplashScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_TrackKaro_Splash)
-        setContentView(R.layout.activity_splash_screeen)
+        setContentView(R.layout.activity_splash_screen)
 
         Handler(Looper.getMainLooper()).postDelayed({
             val prefs = SharedPrefHelper.get(this)

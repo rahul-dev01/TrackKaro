@@ -16,7 +16,7 @@
 
         <!-- Splash (Launcher) -->
         <activity
-            android:name=".SplashScreeen"
+            android:name=".SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -38,13 +38,7 @@
         <activity android:name=".OnboardingActivity"        android:exported="false"/>
         <activity android:name=".ProfileActivity"           android:exported="false"/>
 
-        <!--
-            SMS Auto-Detect Receiver
-            android:exported="true" is required so the system can deliver SMS_RECEIVED.
-            No android:permission attribute — the system SMS broadcast is not
-            protected by BROADCAST_SMS on the receiver side; READ_SMS + RECEIVE_SMS
-            runtime permissions are what gate access.
-        -->
+        <!-- SMS Auto-Detect Receiver -->
         <receiver
             android:name=".SMSReceiver"
             android:exported="true">
@@ -53,12 +47,7 @@
             </intent-filter>
         </receiver>
 
-        <!--
-            • Requires BIND_NOTIFICATION_LISTENER_SERVICE — system-level permission,
-              not granted to third-party apps automatically.
-            • User must explicitly enable it in Settings → Notification Access.
-            • Play-Store compliant: no SMS permission used.
-        -->
+        <!-- Notification Service -->
         <service
             android:name=".NotificationService"
             android:exported="true"

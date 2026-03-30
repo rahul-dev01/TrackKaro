@@ -1,4 +1,4 @@
-package com.example.trackkaro
+package com.example.MonthlyTrackkaro
 
 /**
  * Stateless parser for bank / payment notification text.
