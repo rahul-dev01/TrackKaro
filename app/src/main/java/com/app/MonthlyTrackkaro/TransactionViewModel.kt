@@ -21,6 +21,14 @@ class TransactionViewModel(application: Application) : AndroidViewModel(applicat
     val recentTransactions: LiveData<List<Transaction>> = repository.recentTransactions
     val todayExpense: LiveData<Double>              = repository.getTodayExpense()
 
+    fun observeProfile(onUpdate: (name: String, email: String, budget: Double, currency: String) -> Unit) {
+        repository.observeProfile(onUpdate)
+    }
+
+    fun saveProfile(name: String, email: String, budget: Double, currency: String) = viewModelScope.launch {
+        repository.saveProfile(name, email, budget, currency)
+    }
+
     fun insert(transaction: Transaction) = viewModelScope.launch {
         repository.insert(transaction.copy(userId = userId))
     }

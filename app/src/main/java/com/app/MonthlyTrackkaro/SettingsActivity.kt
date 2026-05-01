@@ -429,14 +429,21 @@ class SettingsActivity : AppCompatActivity() {
                     Toast.makeText(this, "Enter a valid amount", Toast.LENGTH_SHORT).show()
                     return@setPositiveButton
                 }
-                prefs.monthlyBudget = value
-                tvBudgetValue.text  = "${prefs.currencySymbol}%.2f / month".format(value)
-                Toast.makeText(this, "Budget saved", Toast.LENGTH_SHORT).show()
+                
+                lifecycleScope.launch {
+                    viewModel.saveProfile(prefs.userName, prefs.userEmail, value, prefs.currencySymbol)
+                    prefs.monthlyBudget = value
+                    tvBudgetValue.text  = "${prefs.currencySymbol}%.2f / month".format(value)
+                    Toast.makeText(this@SettingsActivity, "Budget saved", Toast.LENGTH_SHORT).show()
+                }
             }
             .setNeutralButton("Clear") { _, _ ->
-                prefs.monthlyBudget = 0.0
-                tvBudgetValue.text  = "Not set — tap to configure"
-                Toast.makeText(this, "Budget cleared", Toast.LENGTH_SHORT).show()
+                lifecycleScope.launch {
+                    viewModel.saveProfile(prefs.userName, prefs.userEmail, 0.0, prefs.currencySymbol)
+                    prefs.monthlyBudget = 0.0
+                    tvBudgetValue.text  = "Not set — tap to configure"
+                    Toast.makeText(this@SettingsActivity, "Budget cleared", Toast.LENGTH_SHORT).show()
+                }
             }
             .setNegativeButton("Cancel", null)
             .show()
@@ -559,12 +566,14 @@ class SettingsActivity : AppCompatActivity() {
     private fun showLogoutDialog() {
         AlertDialog.Builder(this)
             .setTitle("Logout")
-            .setMessage("Are you sure you want to logout?")
+            .setMessage("Are you sure you want to log out?")
             .setPositiveButton("Logout") { _, _ ->
-                prefs.clearSession()   // sets isLoggedIn=false, autoDetectEnabled=false
-                startActivity(Intent(this, LoginScreen::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                })
+                com.google.firebase.auth.FirebaseAuth.getInstance().signOut()
+                prefs.clearSession()
+                val intent = Intent(this, LoginScreen::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                finish()
             }
             .setNegativeButton("Cancel", null)
             .show()

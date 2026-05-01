@@ -6,11 +6,15 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
+import kotlinx.coroutines.launch
 
 class OnboardingActivity : AppCompatActivity() {
 
     private lateinit var prefs: SharedPrefHelper
+    private val viewModel: TransactionViewModel by viewModels()
     private var selectedCurrency = "₹"   // default
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,15 +76,19 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     private fun saveAndProceed(name: String, budgetStr: String, currency: String) {
-        prefs.userName        = name
-        prefs.currencySymbol  = currency
-        prefs.onboardingComplete = true
+        val budget = budgetStr.toDoubleOrNull() ?: 0.0
 
-        val budget = budgetStr.toDoubleOrNull()
-        if (budget != null && budget > 0) prefs.monthlyBudget = budget
+        lifecycleScope.launch {
+            viewModel.saveProfile(name, prefs.userEmail, budget, currency)
+            
+            prefs.userName        = name
+            prefs.currencySymbol  = currency
+            prefs.onboardingComplete = true
+            if (budget > 0) prefs.monthlyBudget = budget
 
-        startActivity(Intent(this, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        })
+            startActivity(Intent(this@OnboardingActivity, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            })
+        }
     }
 }

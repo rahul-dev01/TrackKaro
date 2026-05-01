@@ -7,12 +7,17 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
+import com.google.firebase.auth.FirebaseAuth
 
 class SignUpScreen : AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up_screen)
+
+        auth = FirebaseAuth.getInstance()
 
         val etName = findViewById<EditText>(R.id.etName)
         val etEmail = findViewById<EditText>(R.id.etEmail)
@@ -40,15 +45,28 @@ class SignUpScreen : AppCompatActivity() {
                 password.length < 6 -> Toast.makeText(this, "Password must be at least 6 characters", Toast.LENGTH_SHORT).show()
                 password != confirm -> Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
                 else -> {
-                    val prefs = SharedPrefHelper.get(this)
-                    prefs.isLoggedIn = true
-                    prefs.userId    = email.lowercase().trim()
-                    prefs.userName  = name
-                    prefs.userEmail = email
-                    // New users go through onboarding before reaching the dashboard
-                    startActivity(Intent(this, OnboardingActivity::class.java).apply {
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    })
+                    btnSignUp.isEnabled = false
+                    auth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this) { task ->
+                            if (task.isSuccessful) {
+                                val user = auth.currentUser
+                                val prefs = SharedPrefHelper.get(this)
+                                prefs.isLoggedIn = true
+                                prefs.userId    = user?.uid ?: email.lowercase().trim()
+                                prefs.userName  = name
+                                prefs.userEmail = email
+                                
+                                Toast.makeText(this, "Registration Successful", Toast.LENGTH_SHORT).show()
+                                
+                                // New users go through onboarding before reaching the dashboard
+                                startActivity(Intent(this, OnboardingActivity::class.java).apply {
+                                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                })
+                            } else {
+                                btnSignUp.isEnabled = true
+                                Toast.makeText(this, "Registration Failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                            }
+                        }
                 }
             }
         }

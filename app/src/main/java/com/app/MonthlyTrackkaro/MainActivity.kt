@@ -175,6 +175,16 @@ class MainActivity : AppCompatActivity() {
     private fun observeData() {
         val sym = prefs.currencySymbol
 
+        // Observe profile from Firestore
+        viewModel.observeProfile { name, email, budget, currency ->
+            prefs.userName = name
+            prefs.userEmail = email
+            prefs.monthlyBudget = budget
+            prefs.currencySymbol = currency
+            refreshUserInfo()
+            updateBalanceCard()
+        }
+
         // Recent 5 transactions for dashboard list
         viewModel.recentTransactions.observe(this) { list ->
             val safeList = list ?: emptyList()

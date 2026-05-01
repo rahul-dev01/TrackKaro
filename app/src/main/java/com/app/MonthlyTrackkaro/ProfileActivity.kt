@@ -7,10 +7,14 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 class ProfileActivity : AppCompatActivity() {
 
     private lateinit var prefs: SharedPrefHelper
+    private val viewModel: TransactionViewModel by viewModels()
 
     private lateinit var tvAvatarLetter: TextView
     private lateinit var tvName: TextView
@@ -81,10 +85,14 @@ class ProfileActivity : AppCompatActivity() {
                     Toast.makeText(this, "Name cannot be empty", Toast.LENGTH_SHORT).show()
                     return@setPositiveButton
                 }
-                prefs.userName  = name
-                prefs.userEmail = email
-                loadProfile()
-                Toast.makeText(this, "Profile updated ✓", Toast.LENGTH_SHORT).show()
+                
+                lifecycleScope.launch {
+                    viewModel.saveProfile(name, email, prefs.monthlyBudget, prefs.currencySymbol)
+                    prefs.userName  = name
+                    prefs.userEmail = email
+                    loadProfile()
+                    Toast.makeText(this@ProfileActivity, "Profile updated ✓", Toast.LENGTH_SHORT).show()
+                }
             }
             .setNegativeButton("Cancel", null)
             .show()

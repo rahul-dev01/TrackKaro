@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "585927899004",
-    "project_id": "trackkaro-406cd",
-    "storage_bucket": "trackkaro-406cd.firebasestorage.app"
+    "project_number": "270955065918",
+    "project_id": "monthlytackkaro",
+    "storage_bucket": "monthlytackkaro.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:585927899004:android:af38780e3727e4c30d16f9",
+        "mobilesdk_app_id": "1:270955065918:android:36007abb53ac6f5891176f",
         "android_client_info": {
-          "package_name": "com.example.trackkaro"
+          "package_name": "com.monthlytrackkaro.app"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDFGSVzav2VCKspb5rZmG-cc5bdhNTsK3I"
+          "current_key": "AIzaSyBvn0NsVh4Es_wID2dT80_82ptRS4rMNjI"
         }
       ],
       "services": {

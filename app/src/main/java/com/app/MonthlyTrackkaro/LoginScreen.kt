@@ -7,15 +7,26 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 
 class LoginScreen : AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        auth = FirebaseAuth.getInstance()
+
         // If already logged in, skip straight to the app
         val prefs = SharedPrefHelper.get(this)
-        if (prefs.isLoggedIn) {
+        if (auth.currentUser != null || prefs.isLoggedIn) {
+            // Ensure prefs are synced if firebase user exists but prefs say not logged in
+            if (auth.currentUser != null) {
+                prefs.isLoggedIn = true
+                prefs.userId = auth.currentUser!!.uid
+                prefs.userEmail = auth.currentUser!!.email ?: ""
+            }
             startActivity(Intent(this, MainActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             })
@@ -41,14 +52,28 @@ class LoginScreen : AppCompatActivity() {
                 password.isEmpty() -> Toast.makeText(this, "Enter your password", Toast.LENGTH_SHORT).show()
                 password.length < 6 -> Toast.makeText(this, "Password must be at least 6 characters", Toast.LENGTH_SHORT).show()
                 else -> {
-                    prefs.isLoggedIn = true
-                    // Use email as stable userId — unique per user on this device
-                    prefs.userId    = email.lowercase().trim()
-                    prefs.userName  = email.substringBefore("@")
-                    prefs.userEmail = email
-                    startActivity(Intent(this, MainActivity::class.java).apply {
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    })
+                    btnLogin.isEnabled = false
+                    auth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this) { task ->
+                            if (task.isSuccessful) {
+                                val user = auth.currentUser
+                                prefs.isLoggedIn = true
+                                prefs.userId    = user?.uid ?: email.lowercase().trim()
+                                prefs.userEmail = email
+                                // For login, we might not have the name immediately if it's not in Auth profile
+                                // But we can set it to part of email if needed
+                                if (prefs.userName == "User") {
+                                    prefs.userName = email.substringBefore("@")
+                                }
+                                
+                                startActivity(Intent(this, MainActivity::class.java).apply {
+                                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                })
+                            } else {
+                                btnLogin.isEnabled = true
+                                Toast.makeText(this, "Login Failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                            }
+                        }
                 }
             }
         }
